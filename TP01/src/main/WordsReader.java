@@ -11,19 +11,7 @@ public class WordsReader {
         this.filePath = filePath;
         this.reader = null;
 
-        this.file = new File(filePath);
-    }
-
-    private String convertCharToBinary(int character) {
-        String binaryCharacter = Integer.toBinaryString(character);
-        
-        if(binaryCharacter.length() < 8) {
-            int dif = 8 - binaryCharacter.length();
-            for(int i = 0; i < dif; i++) 
-                binaryCharacter = "0" + binaryCharacter;
-        }
-
-        return binaryCharacter;
+        this.file = new File(this.filePath);
     }
 
     public ArrayList<String> getArrayOfWords() {
@@ -42,7 +30,7 @@ public class WordsReader {
                     binaryWord = "";
                     counter = 0;
                 } else if(counter < 16) {
-                    binaryWord += this.convertCharToBinary(character);
+                    binaryWord += (char)character;
                     counter++;
                 }
             }
