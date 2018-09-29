@@ -11,14 +11,33 @@ public class ArvorePatricia {
     }
 
     private PatNo raiz;
+    
+    private String getLetraBinario(int letra) {
+        String letraBinario = Integer.toBinaryString(letra);
         
+        if(letraBinario.length() < 8) {
+            int dif = 8 - letraBinario.length();
+            for(int i = 0; i < dif; i++) {
+                letraBinario = "0" + letraBinario;
+            }
+        }
+
+        return letraBinario;
+    }
+
     private String getPalavraBinario(String palavra) {
         String palavraBinaria = "";
 
         for(int j = 0; j < palavra.length(); j++) {
             int letraInteiro = (int)palavra.charAt(j);
-            String letraBinario = Integer.toBinaryString(letraInteiro);
+            String letraBinario = this.getLetraBinario(letraInteiro);
             palavraBinaria += letraBinario;
+        }
+
+        if(palavraBinaria.length() < 128) {
+            int dif = 128 - palavraBinaria.length();
+            for(int j = 0; j < dif; j++)
+                palavraBinaria = "0" + palavraBinaria;
         }
 
         return palavraBinaria;
@@ -30,7 +49,6 @@ public class ArvorePatricia {
             return 0;
 
         String palavraBinaria = this.getPalavraBinario(k);
-
         int bitNeeded = Character.getNumericValue(palavraBinaria.charAt(i));
         return bitNeeded;
     }
@@ -81,7 +99,7 @@ public class ArvorePatricia {
             aux = (PatNoInt) t;
         if (this.eExterno(t) || (i < aux.index) ) { 
             PatNo p = this.criaNoExt(k);
-            if (this. bit(i , k) == 1)
+            if (this.bit(i , k) == 1)
                 return this. criaNoInt ( i , t , p);
             else 
                 return this. criaNoInt ( i , p, t );   
@@ -108,11 +126,10 @@ public class ArvorePatricia {
             }
             PatNoExt aux = (PatNoExt)p;
             int i = 1; // acha o primeiro bit diferente
-            int numeroBits = this.getPalavraBinario(k).length();
-            while (( i <= numeroBits) && (this.bit(i , k) == this.bit(i, aux.palavra))) 
+            int numeroBits = 128;
+            while (( i < numeroBits) && (this.bit(i , k) == this.bit(i, aux.palavra))) 
                 i++;
-            if (i > numeroBits) {
-                System.out.println("Erro : chave ja esta na arvore");
+            if (i >= numeroBits) {
                 return t;
             }
             else 

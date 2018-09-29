@@ -1,44 +1,50 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class WordsReader {
 
     private String filePath;
     private File file;
-    private FileReader reader;
 
     public WordsReader(String filePath) {
         this.filePath = filePath;
-        this.reader = null;
 
         this.file = new File(this.filePath);
+    }
+
+    private String cleanWord(String word) {
+        word = word.replace(",", "");
+        word = word.replace(".", "");
+        word = word.replace(";", "");
+        word = word.replace(":", "");
+        word = word.replace("(", "");
+        word = word.replace(")", "");
+        word = word.replace("{", "");
+        word = word.replace("}", "");
+        word = word.replace("[", "");
+        word = word.replace("]", "");
+        word = word.replace("!", "");
+        word = word.replace("?", "");
+        return word;
     }
 
     public ArrayList<String> getArrayOfWords() {
         ArrayList<String> words = new ArrayList<String>();
         
+        Scanner scan = null;
         try {
-            this.reader = new FileReader(this.file);
-            
-            int counter = 1;
-            int character;
-            String binaryWord = "";
-
-            while ((character = this.reader.read()) != -1) {
-                if(((char)character) == ' ') {
-                    words.add(binaryWord);
-                    binaryWord = "";
-                    counter = 0;
-                } else if(counter < 16) {
-                    binaryWord += (char)character;
-                    counter++;
-                }
-            }
-
-        } catch(IOException e) {
-            e.printStackTrace();
+            scan = new Scanner(this.file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  
         }
-
+        while (scan.hasNextLine()) {
+            Scanner scan2 = new Scanner(scan.nextLine());
+            while (scan2.hasNext()) {
+                String word = scan2.next();
+                words.add(this.cleanWord(word));
+            }
+        }
+        
         return words;
     }
 }
